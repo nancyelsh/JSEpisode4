@@ -110,11 +110,21 @@ function mostProlificAuthor(authors) {
 function relatedBooks(bookId, authors, books) {
   let titlesList = [];
   const book = getBookById(bookId, books);
-  book.authors.forEach(author =>
-    (titlesList = titlesList.concat(
-      titlesByAuthorName(author.name, authors, books)
-    )).filter(book => !titlesList.includes(book))
-  );
+  // book.authors.forEach(author =>
+  //   (titlesList = titlesList.concat(
+  //     titlesByAuthorName(author.name, authors, books)
+  //   )).filter(book => !titlesList.includes(book))
+  // );
+  // console.log(book);
+  let titles = [];
+  book.authors.forEach(author => {
+    titles = titlesByAuthorName(author.name, authors, books);
+    titles.forEach(title => {
+      if (!titlesList.includes(title)) titlesList.push(title);
+    });
+  });
+  // titles.forEach(title => titlesList.push(title));
+  // titlesList = titlesList.filter(book => titlesList.includes(book));
   return titlesList;
 }
 
