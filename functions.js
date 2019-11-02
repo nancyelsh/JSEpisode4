@@ -108,7 +108,14 @@ function mostProlificAuthor(authors) {
  * BONUS: REMOVE DUPLICATE BOOKS
  ****************************************************************/
 function relatedBooks(bookId, authors, books) {
-  // Your code goes here
+  let titlesList = [];
+  const book = getBookById(bookId, books);
+  book.authors.forEach(author =>
+    (titlesList = titlesList.concat(
+      titlesByAuthorName(author.name, authors, books)
+    )).filter(book => !titlesList.includes(book))
+  );
+  return titlesList;
 }
 
 /**************************************************************
@@ -118,7 +125,27 @@ function relatedBooks(bookId, authors, books) {
  *   co-authored the greatest number of books
  ****************************************************************/
 function friendliestAuthor(authors) {
-  // Your code goes here
+  authors.forEach(author => {
+    author.count = 0;
+    authors.forEach(secondAuthor => {
+      if (secondAuthor.name !== author.name) {
+        const sharedBooks = secondAuthor.books.filter(bookId =>
+          author.books.includes(bookId)
+        );
+        author.count += sharedBooks.length;
+      }
+    });
+  });
+
+  let friendlyAuthor = authors[0];
+
+  authors.forEach(author => {
+    if (author.count > friendlyAuthor.count) {
+      friendlyAuthor = author;
+    }
+  });
+
+  return friendlyAuthor.name;
 }
 
 module.exports = {
